@@ -256,6 +256,75 @@ List profiles in a sketch (for extrusion).
 
 ---
 
+## Sketch Constraints
+
+### add_constraint_midpoint
+Constrain a point to the midpoint of a line. Commonly used to center geometry on the origin.
+```json
+{"id": 20, "action": "add_constraint_midpoint", "params": {
+  "sketch_index": -1,
+  "line_index": 0,
+  "point": "origin"
+}}
+```
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| sketch_index | int | -1 (last) | Which sketch |
+| line_index | int | 0 | Index of the line |
+| point | string | "origin" | Currently only "origin" supported |
+
+### add_constraint_coincident
+Constrain a point to lie on a curve (line or circle).
+```json
+{"id": 21, "action": "add_constraint_coincident", "params": {
+  "point_type": "line_endpoint",
+  "point_source": {"line_index": 0, "endpoint": "end"},
+  "target_type": "circle",
+  "target_index": 0
+}}
+```
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| point_type | string | "line_endpoint" | `"line_endpoint"` or `"circle_center"` |
+| point_source | object | {} | `{line_index, endpoint}` or `{circle_index}` |
+| target_type | string | "circle" | `"circle"` or `"line"` |
+| target_index | int | 0 | Index of target curve |
+
+### add_constraint_coincident_points
+Constrain two line endpoints together (point-to-point).
+```json
+{"id": 22, "action": "add_constraint_coincident_points", "params": {
+  "line1_index": 0, "line1_endpoint": "end",
+  "line2_index": 1, "line2_endpoint": "start"
+}}
+```
+
+### add_constraint_vertical
+Make a line vertical.
+```json
+{"id": 23, "action": "add_constraint_vertical", "params": {"line_index": 0}}
+```
+
+### add_constraint_horizontal
+Make a line horizontal.
+```json
+{"id": 24, "action": "add_constraint_horizontal", "params": {"line_index": 0}}
+```
+
+### get_sketch_constraints
+List all geometric constraints in a sketch.
+```json
+{"id": 25, "action": "get_sketch_constraints", "params": {"sketch_index": -1}}
+```
+
+### delete_constraint
+Delete a constraint by index.
+```json
+{"id": 26, "action": "delete_constraint", "params": {"constraint_index": 5}}
+```
+
+---
+
 ## 3D Operations
 
 ### extrude

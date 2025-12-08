@@ -104,31 +104,46 @@ The skill provides Claude with:
 
 ## Available Commands
 
-### Queries
+### Session Export
+| Command | Description |
+|---------|-------------|
+| `export_session` | Export all design data to timestamped folder |
+
+### Connection
 | Command | Description |
 |---------|-------------|
 | `ping` | Test connection |
-| `get_info` | Get design overview |
-| `get_full_design` | Complete design snapshot |
-| `get_bodies_detailed` | Detailed body geometry |
-| `get_all_parameters` | All parameters including dimensions |
-| `get_sketch_geometry` | Sketch curve coordinates |
+| `message` | Display message in Fusion 360 |
 
 ### Sketching
 | Command | Description |
 |---------|-------------|
 | `create_sketch` | Create sketch on plane |
+| `create_sketch_on_face` | Create sketch on body face |
 | `draw_circle` | Draw a circle |
 | `draw_rectangle` | Draw a rectangle |
 | `draw_line` | Draw a line |
-| `draw_arc` | Draw an arc |
+| `draw_polygon` | Draw a regular polygon |
+| `draw_arc` / `draw_arc_sweep` / `draw_arc_three_points` | Draw arcs |
 | `list_profiles` | List available profiles |
 
-### Features
+### Sketch Constraints
+| Command | Description |
+|---------|-------------|
+| `add_constraint_midpoint` | Constrain point to line midpoint |
+| `add_constraint_coincident` | Constrain point to curve |
+| `add_constraint_coincident_points` | Constrain two points together |
+| `add_constraint_vertical` | Make line vertical |
+| `add_constraint_horizontal` | Make line horizontal |
+| `get_sketch_constraints` | List all constraints |
+| `delete_constraint` | Delete a constraint |
+
+### 3D Features
 | Command | Description |
 |---------|-------------|
 | `extrude` | Extrude a profile |
 | `revolve` | Revolve around an axis |
+| `loft` / `loft_rails` | Create smooth transitions |
 | `fillet` | Round edges |
 | `chamfer` | Bevel edges |
 | `shell` | Hollow out a body |
@@ -154,22 +169,30 @@ All dimensions are in **centimeters** (Fusion 360's internal unit):
 
 ```
 ClaudeBridge/
-├── ClaudeBridge.py          # Entry point
-├── config.py                # File paths, settings
-├── utils.py                 # JSON utilities
+├── ClaudeBridge.py              # Entry point
+├── config.py                    # File paths, settings
+├── utils.py                     # JSON utilities
 ├── core/
-│   ├── polling.py           # Background polling thread
-│   └── event_handler.py     # Main thread event handler
+│   ├── polling.py               # Background polling thread
+│   └── event_handler.py         # Main thread event handler
 ├── commands/
-│   ├── dispatcher.py        # Command routing
-│   ├── context.py           # Fusion 360 API abstraction
-│   ├── helpers/             # Shared utilities
-│   ├── queries/             # Design information
-│   ├── sketch/              # 2D operations
-│   ├── features/            # 3D operations
-│   ├── construction/        # Construction geometry
-│   └── ...
-└── .claude/skills/fusion360/ # Claude Code skill
+│   ├── dispatcher.py            # Command routing
+│   ├── context.py               # Fusion 360 API abstraction
+│   ├── helpers/                 # Shared utilities
+│   │   ├── geometry/            # Geometry helpers (bodies, sketches, edges, etc.)
+│   │   ├── sketch_curves.py     # Curve accessors
+│   │   └── command_utils.py     # Decorators
+│   ├── queries/                 # [Deprecated] Use export_session
+│   ├── sketch/
+│   │   ├── create.py            # Sketch creation
+│   │   ├── primitives.py        # Basic shapes
+│   │   ├── curves.py            # Arcs
+│   │   └── constraints/         # Geometric constraints
+│   ├── features/                # 3D operations
+│   ├── construction/            # Construction geometry
+│   └── export/
+│       └── session/             # Session export with collectors
+└── .claude/skills/fusion360/    # Claude Code skill
 ```
 
 See [docs/architecture.md](docs/architecture.md) for detailed architecture documentation.

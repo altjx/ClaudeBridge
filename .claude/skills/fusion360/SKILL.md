@@ -66,8 +66,18 @@ See [reference.md](./reference.md) for the complete API reference.
 - `draw_circle` - Draw a circle
 - `draw_rectangle` - Draw a rectangle
 - `draw_line` - Draw a line
+- `draw_polygon` - Draw a regular polygon
 - `draw_arc` / `draw_arc_sweep` / `draw_arc_three_points` - Draw arcs
 - `list_profiles` - List profiles in a sketch
+
+### Sketch Constraints
+- `add_constraint_midpoint` - Constrain point to line midpoint
+- `add_constraint_coincident` - Constrain point to curve
+- `add_constraint_coincident_points` - Constrain two line endpoints together
+- `add_constraint_vertical` - Make line vertical
+- `add_constraint_horizontal` - Make line horizontal
+- `get_sketch_constraints` - List all constraints in a sketch
+- `delete_constraint` - Delete a constraint by index
 
 ### 3D Operations
 - `extrude` - Extrude a profile into 3D
