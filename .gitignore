@@ -1,0 +1,3 @@
+# IPC files (runtime communication between Claude and Fusion 360)
+commands.json
+results.json
